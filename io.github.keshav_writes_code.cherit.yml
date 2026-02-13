@@ -36,19 +36,19 @@ modules:
       - node-sources.json
 
     build-commands:
-      - npm run tauri build --workspace=cherit -- -b deb
-      - ar -x apps/app/src-tauri/target/release/bundle/deb/*.deb
-      - |
-        cd apps/app/src-tauri/target/release/bundle/deb/cherit*/
-        tar -xf data.tar.gz
-        install -Dm755 usr/bin/cherit /app/bin/cherit
-        install -Dm644 usr/share/applications/cherit.desktop /app/share/applications/io.github.keshav_writes_code.cherit.desktop
-        install -Dm644 usr/share/metainfo/*.metainfo.xml /app/share/metainfo/io.github.keshav_writes_code.cherit.metainfo.xml
       - cp apps/app/distribute/linux/flatpak/package-lock.json .
       - npm ci --offline
+      - npm run tauri build --workspace=cherit -- --no-bundle
+
+      - install -Dm755 -t /app/bin/ apps/app/src-tauri/target/release/cherit
+      - install -Dm644 -t /app/share/metainfo/ apps/app/distribute/linux/flatpak/io.github.keshav_writes_code.cherit.metainfo.xml
+      - install -Dm644 -t /app/share/applications/ apps/app/distribute/linux/flatpak/io.github.keshav_writes_code.cherit.desktop
+
+      - desktop-file-edit --set-key=Icon --set-value="io.github.keshav_writes_code.cherit"
+        /app/share/applications/io.github.keshav_writes_code.cherit.desktop
+
+      # Install Icons
       - install -Dm644 apps/app/src-tauri/icons/32x32.png /app/share/icons/hicolor/32x32/apps/io.github.keshav_writes_code.cherit.png
       - install -Dm644 apps/app/src-tauri/icons/64x64.png /app/share/icons/hicolor/64x64/apps/io.github.keshav_writes_code.cherit.png
       - install -Dm644 apps/app/src-tauri/icons/128x128.png /app/share/icons/hicolor/128x128/apps/io.github.keshav_writes_code.cherit.png
       - install -Dm644 apps/app/src-tauri/icons/128x128@2x.png /app/share/icons/hicolor/256x256/apps/io.github.keshav_writes_code.cherit.png
-      - sed -i 's/Icon=cherit/Icon=io.github.keshav_writes_code.cherit/' /app/share/applications/io.github.keshav_writes_code.cherit.desktop
-
