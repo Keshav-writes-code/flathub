@@ -18,13 +18,6 @@ build-options:
   append-path: /usr/lib/sdk/node22/bin:/usr/lib/sdk/rust-stable/bin:/run/build/cherit/bun-bin
 
 modules:
-  - type: archive
-    url: https://github.com/oven-sh/bun/releases/download/bun-v1.3.10/bun-linux-x64.zip
-    sha256: f57bc0187e39623de716ba3a389fda5486b2d7be7131a980ba54dc7b733d2e08
-    dest: bun-bin
-    only-arches:
-      - x86_64
-
   - name: cherit
     buildsystem: simple
     build-options:
@@ -37,6 +30,12 @@ modules:
       - type: git
         url: https://github.com/Keshav-writes-code/Cherit.git
         branch: refac/site-seperation
+      - type: archive
+        url: https://github.com/oven-sh/bun/releases/download/bun-v1.3.10/bun-linux-x64.zip
+        sha256: f57bc0187e39623de716ba3a389fda5486b2d7be7131a980ba54dc7b733d2e08
+        dest: bun-bin
+        only-arches:
+          - x86_64
 
       - cargo-sources.json
       - node-sources.json
