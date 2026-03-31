@@ -12,21 +12,29 @@ finish-args:
   - --share=ipc
   - --env=GTK_USE_PORTAL=1
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.node22
+  - org.freedesktop.Sdk.Extension.node24
   - org.freedesktop.Sdk.Extension.rust-stable
 build-options:
   append-path: /usr/lib/sdk/node22/bin:/usr/lib/sdk/rust-stable/bin
 
 modules:
+  - name: bun
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 bun /app/bin/bun
+    sources:
+      - type: archive
+        url: https://github.com/oven-sh/bun/releases/download/bun-v1.3.11/bun-linux-x64.zip
+        sha256: 8611ba935af886f05a6f38740a15160326c15e5d5d07adef966130b4493607ed
+
   - name: cherit
     buildsystem: simple
     build-options:
       env:
         CARGO_HOME: /run/build/cherit/cargo
-        XDG_CACHE_HOME: /run/build/cherit/flatpak-node/cache
-        npm_config_cache: /run/build/cherit/flatpak-node/npm-cache
-        npm_config_offline: "true"
         CARGO_NET_OFFLINE: "true"
+        XDG_CACHE_HOME: /run/build/cherit/flatpak-node/cache
+        BUN_INSTALL_CACHE_DIR: /run/build/flow-browser/bun_cache
     sources:
       - type: git
         url: https://github.com/Keshav-writes-code/Cherit.git
@@ -36,9 +44,9 @@ modules:
       - node-sources.json
 
     build-commands:
-      - cp apps/app/distribute/linux/flatpak/package-lock.json .
-      - npm ci --offline
-      - npm run tauri build --workspace=cherit -- --no-bundle
+      - find ../bun_cache -name package.tgz -execdir tar --strip-components=1 --delay-directory-restore -xf {} \; -delete
+      - chmod -R u+rwX ../bun_cache
+      - bun install
 
       - install -Dm755 -t /app/bin/ apps/app/src-tauri/target/release/cherit
       - install -Dm644 -t /app/share/metainfo/ apps/app/distribute/linux/flatpak/io.github.keshav_writes_code.cherit.metainfo.xml
