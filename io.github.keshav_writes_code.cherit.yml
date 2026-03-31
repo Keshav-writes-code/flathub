@@ -30,7 +30,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/Keshav-writes-code/Cherit.git
-        branch: dev
+        branch: refac/site-seperation
 
       - cargo-sources.json
       - node-sources.json
