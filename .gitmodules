@@ -1,3 +1,6 @@
 [submodule "flatpak-builder-tools"]
 	path = flatpak-builder-tools
 	url = https://github.com/flatpak/flatpak-builder-tools.git
+[submodule "flatpak-bun-generator"]
+	path = flatpak-bun-generator
+	url = https://github.com/MultiboxLabs/flatpak-bun-generator.git
