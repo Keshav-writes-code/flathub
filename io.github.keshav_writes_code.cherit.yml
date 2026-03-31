@@ -44,7 +44,8 @@ modules:
     build-commands:
       - find bun_cache -name package.tgz -execdir tar --strip-components=1 --delay-directory-restore -xf {} \; -delete
       - chmod -R u+rwX bun_cache
-      - bun install
+      - cd apps/app && bun install
+      - cd apps/app && bun run tauri build --no-bundle
 
       - install -Dm755 -t /app/bin/ apps/app/src-tauri/target/release/cherit
       - install -Dm644 -t /app/share/metainfo/ apps/app/distribute/linux/flatpak/io.github.keshav_writes_code.cherit.metainfo.xml
