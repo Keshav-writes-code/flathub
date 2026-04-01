@@ -38,6 +38,13 @@ modules:
         only-arches:
           - x86_64
 
+      - type: archive
+        url: https://github.com/oven-sh/bun/releases/download/bun-v1.3.10/bun-linux-aarch64.zip
+        sha256: fa5ecb25cafa8e8f5c87a0f833719d46dd0af0a86c7837d806531212d55636d3
+        dest: bun-bin
+        only-arches:
+          - aarch64
+
       - cargo-sources.json
       - node-sources.json
 
